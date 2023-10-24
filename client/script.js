@@ -99,7 +99,7 @@ $(document).ready(function(){
     });
 
     // Send data to the server
-    fetch('/empForm', {
+    fetch('/empForm/22', {
         method: 'PUT', // Change to 'GET', 'PUT', 'DELETE', etc., as needed
         headers: {
             'Content-Type': 'application/json', // Adjust content type if sending JSON data
@@ -123,32 +123,7 @@ $(document).ready(function(){
         console.error('Error sending data to the server:', error);
     });
 
-    // Send data to the server
-    fetch('/empForm', {
-        method: 'DELETE', // Change to 'GET', 'PUT', 'DELETE', etc., as needed
-        headers: {
-            'Content-Type': 'application/json', // Adjust content type if sending JSON data
-        },
-        body: JSON.stringify({
-
-            "fname" : showName,
-            "employee_age" : showAge,
-            "city": showCity,
-            "email": showEmail,
-           "phone": showPhone,
-            "post": showPost,
-            "sdate": showsDate
-        }), // Convert data to JSON format if needed
-    })
-    .then(response => response.json())
-    .then(responseData => {
-        console.log('Data sent to the server successfully:', responseData);
-    })
-    .catch(error => {
-        console.error('Error sending data to the server:', error);
-    });
-
-
+   
         tblRow.removeClass('proto');
         tblRow.find('.empNo').text(empNo);
         tblRow.attr('data-empno', empNo);
@@ -168,7 +143,29 @@ $(document).ready(function(){
 
     $('#data').on('click', '.btn-danger', function(){
         $(this).parents('tr').remove();
-    });
+
+         // Send data to the server
+    fetch(`/empForm/21`, {
+        method: 'DELETE', // Change to 'GET', 'PUT', 'DELETE', etc., as needed
+    })
+    .then((response) => {
+        if (response.status === 204) {
+          // Record deleted successfully
+          alert('Record deleted successfully');
+        } else if (response.status === 404) {
+          alert('Record not found');
+        } else {
+          alert('Failed to delete record');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  });
+
+ });
+
+
 
     $('body').on('click', '.newEmp', function(){
         $('.modal .modal-footer').show();
@@ -201,7 +198,6 @@ $(document).ready(function(){
         $('.modal').modal('show');
     });
 
-});
 
 // API endpoint URL
 const url = '/empForm';

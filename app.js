@@ -56,9 +56,9 @@ app.post('/empForm', (req, res) => {
   })
 });
 
-app.put('/empForm',(req, res) => {
+app.put('/empForm:empNo',(req, res) => {
   try {
-    const empForm = db('empForm').select('*')
+    const empForm = db('empForm').where({ empNo:req.params.empNo }).update(updatedData)
     empForm.then((data) => {
       res.json(data);
       console.log(data)});
@@ -85,11 +85,11 @@ app.put('/empForm',(req, res) => {
   })
 });*/
 
-app.delete('/empForm',(req, res) => {
+app.delete('/empForm/:empNo',(req, res) => {
   try {
-    const empForm = db('empForm').select('*')
+    const empForm = db('empForm').where({ empNo:req.params.empNo }).del()
     empForm.then((data) => {
-      res.json(data);
+      res.status(204).json(data);
       console.log(data)});
    
  } catch(error) {
